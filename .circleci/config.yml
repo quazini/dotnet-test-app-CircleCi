@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   windows: circleci/windows@2.2.0
+  docker: circleci/docker@2.1.2
 
 jobs:
   test:
@@ -27,7 +28,7 @@ jobs:
   build:
     description: Build application with Release configuration
     executor:
-      name: windows/default
+      name: docker/docker
     steps:
       - checkout
       - setup_remote_docker
