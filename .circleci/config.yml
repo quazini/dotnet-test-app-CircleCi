@@ -30,9 +30,14 @@ jobs:
       name: windows/default
     steps:
       - checkout
-      - run:
-          name: "Build Application according to some given configuration"
-          command: dotnet.exe build --configuration Release
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run: 
+          name: Build Docker image
+          command: |
+            docker build -t $DOCKER_REPOSITORY:$CIRCLE_SHA1 .
+            echo $DOCKER_PASSWORD | docker login -u $DOCKER_USER --password-stdin
+            docker push $DOCKER_REPOSITORY:$CIRCLE_SHA1
 workflows:
   build-and-test:
     jobs:
