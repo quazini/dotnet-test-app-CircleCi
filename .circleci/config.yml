@@ -40,7 +40,7 @@ jobs:
             echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
             docker push $DOCKER_REPOSITORY:$CIRCLE_SHA1
             echo "updating image tag in values file"
-            sed -i "s,tag:.*,tag:\ ${{ $CIRCLE_SHA1 }}," helm/webapp/values.yaml
+            sed -i "s,tag:.*,tag:\$CIRCLE_SHA1," helm/webapp/values.yaml
             git add . && git commit -m "update image tag"
             git push
 workflows:
