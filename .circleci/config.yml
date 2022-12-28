@@ -3,6 +3,7 @@ version: 2.1
 orbs:
   windows: circleci/windows@2.2.0
   docker: circleci/docker@2.1.2
+  helm: circleci/helm@1.2.0
 
 jobs:
   test:
@@ -38,6 +39,13 @@ jobs:
             docker build -t $DOCKER_REPOSITORY:$CIRCLE_SHA1 .
             echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
             docker push $DOCKER_REPOSITORY:$CIRCLE_SHA1
+      - helm/install-helm-client:
+          version: v3.0.0
+      - helm/upgrade-helm-chart:
+          chart: ./helm/webapp
+          release-name: deployment-demo
+          no-output-timeout: 5m
+          values-to-override: image.tag=${CIRCLE_SHA1},image.repository=${DOCKER_REPOSITORY} 
 workflows:
   build-and-test:
     jobs:
