@@ -39,6 +39,8 @@ jobs:
             docker build -t $DOCKER_REPOSITORY:$CIRCLE_SHA1 .
             echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
             docker push $DOCKER_REPOSITORY:$CIRCLE_SHA1
+            git config --global user.email nanvenfaden@gmail.com
+            git config --global user.name  quazini
             echo "updating image tag in values file"
             sed -i "s,tag:.*,tag:\$CIRCLE_SHA1," helm/webapp/values.yaml
             git add . && git commit -m "update image tag"
