@@ -39,13 +39,10 @@ jobs:
             docker build -t $DOCKER_REPOSITORY:$CIRCLE_SHA1 .
             echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
             docker push $DOCKER_REPOSITORY:$CIRCLE_SHA1
-      - helm/install-helm-client:
-          version: v3.0.0
-      - helm/upgrade-helm-chart:
-          chart: ./helm/webapp
-          release-name: deployment-demo
-          no-output-timeout: 5m
-          values-to-override: image.tag=${CIRCLE_SHA1},image.repository=${DOCKER_REPOSITORY} 
+            echo "updating image tag in values file"
+            sed -i "s,tag:.*,tag:\ ${{ $CIRCLE_SHA1 }}," helm/webapp/values.yaml
+            git add . && git commit -m "update image tag"
+            git push
 workflows:
   build-and-test:
     jobs:
