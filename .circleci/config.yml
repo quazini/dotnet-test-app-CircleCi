@@ -57,7 +57,7 @@ jobs:
             git config --global user.name  quazini
             git checkout master
             echo "updating image tag in values file"
-            sed -i "s,tag:.*,tag:\ ${{ CIRCLE_SHA1 }}," helm/webapp/values.yaml
+            sed -i "s,tag:.*,tag:\ {{ $CIRCLE_SHA1 }}," helm/webapp/values.yaml
             git add . && git commit -m "update image tag"
             git push
 workflows:
