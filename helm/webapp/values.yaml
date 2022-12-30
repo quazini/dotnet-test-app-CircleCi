@@ -8,7 +8,7 @@ image:
   repository: draego/dotnet_example
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "6d31a0af311a9a5279312a0f3a685a5db2212b48"
+  tag:6d31a0af311a9a5279312a0f3a685a5db2212b48
 
 imagePullSecrets: []
 nameOverride: ""
