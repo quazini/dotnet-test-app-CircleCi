@@ -35,6 +35,7 @@ jobs:
       - setup_remote_docker
       - add_ssh_keys:
           fingerprints:
+            - 6e:fb:d0:43:f9:cf:09:37:2b:ce:35:2c:f3:b0:40:1f
       - run: 
           name: Build Docker image
           command: |
@@ -56,7 +57,7 @@ jobs:
             git config --global user.name  quazini
             git checkout master
             echo "updating image tag in values file"
-            sed -i "s,tag:.*,tag:\{{$CIRCLE_SHA1}}," helm/webapp/values.yaml
+            sed -i "s,tag:.*,tag:\ {{ $CIRCLE_SHA1 }}," helm/webapp/values.yaml
             git add . && git commit -m "update image tag"
             git push
 workflows:
